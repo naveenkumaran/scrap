@@ -1,0 +1,4 @@
+user default off ~* &* -@all
+user admin on #5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8 ~* &* +@all
+user appuser1 on #0b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e ~public:* &* +@all -@dangerous
+user default on nopass sanitize-payload ~* &* +@all

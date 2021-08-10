@@ -1,0 +1,28 @@
+{
+    "type": "record",
+    "namespace": "com.demo.temperature.reading",
+    "name": "TemperatureReading",
+    "fields": [
+        {
+            "name": "Temperature",
+            "type": {
+                "type": "enum",
+                "name": "location",
+                "namespace": "com.demo.temperature.reading",
+                "symbols": [
+                    "CENTRAL",
+                    "EAST",
+                    "WEST"
+                ]
+            }
+        },
+        {
+            "name": "sensorid",
+            "type": "string"
+        },
+        {
+            "name": "temp",
+            "type": "double"
+        }
+    ]
+}

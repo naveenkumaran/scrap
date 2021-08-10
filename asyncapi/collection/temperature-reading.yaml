@@ -1,0 +1,83 @@
+asyncapi: 2.0.0
+
+# ---
+
+id: 'urn:dalelane:temperature'
+
+# ---
+
+info:
+  title: Temperature reading
+  version: 1.0.0
+  description: |-
+    # Events of temperature reading from IOT devices
+  contact:
+    name: Naveen K
+    email: naveenk@gmail.com
+    url: https://temperature-systems.com/contacts/dalelane.html
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# ---
+servers:
+  broker-central:
+    url: 'localhost:9092'
+    protocol: kafka
+    protocolVersion: '2.6.0'
+    description: Kafka broker running in central warehouse
+
+# ---
+
+channels:
+
+  TEMPERATURE:
+    description: Temperature sensor readings from all warehouses
+    publish:
+      operationId: produceTemperature
+      bindings:
+        kafka:
+          clientId:
+            type: string
+            pattern: '^[a-z]{22}$'
+      message:
+        name: temperatureReading
+        title: Temperature sensor reading
+        summary: Sensor readings from IoT platform in all warehouses
+        tags:
+          - name: central
+            description: Events relating to the central warehouse
+          - name: east
+            description: Events relating to the East warehouse
+          - name: west
+            description: Events relating to the West warehouse
+        bindings:
+          kafka:
+            key:
+              type: string
+              enum:
+               - central
+               - east
+               - west
+        headers:
+          type: object
+          properties:
+            sensortype:
+              description: IoT sensor type code
+              type: string
+            acmecode:
+              type: integer
+              minimum: 1
+              maximum: 9
+        schemaFormat: 'application/vnd.apache.avro;version=1.9.0'
+        contentType: 'application/octet-stream'
+        payload:
+          $ref: ./temperature_v1.0.0.avsc
+        examples:
+          - headers:
+              sensortype: 'rpibd'
+              acmecode: 7
+            payload:
+              warehouse: CENTRAL
+              sensorid: abcd1234
+              temp: 14.3
